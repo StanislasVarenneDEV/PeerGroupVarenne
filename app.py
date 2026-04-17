@@ -2,8 +2,21 @@ import streamlit as st
 import asyncio
 import re
 import io
+import os
+import subprocess
 from datetime import date
 from playwright.async_api import async_playwright
+
+# ── Install Chromium at startup if missing ──
+@st.cache_resource
+def install_chromium():
+    result = subprocess.run(
+        ["python", "-m", "playwright", "install", "chromium"],
+        capture_output=True, text=True
+    )
+    return result.returncode
+
+install_chromium()
 from bs4 import BeautifulSoup
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
